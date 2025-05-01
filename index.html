@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Tile Tabs Browser</title>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      #toolbar {
+        display: flex;
+        padding: 5px;
+        background: #f0f0f0;
+      }
+
+      #tile-container {
+        display: grid;
+        grid-auto-flow: row; /* penting agar tile mengisi baris duluan */
+        width: 100%;
+        height: calc(100% - 40px);
+        overflow: hidden;
+      }
+
+      .tile {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid #ccc;
+        overflow: hidden;
+      }
+
+      .tile-toolbar {
+        display: flex;
+        padding: 2px;
+        background: #eaeaea;
+      }
+
+      .url-input {
+        flex-grow: 1;
+        margin-right: 5px;
+      }
+
+      webview {
+        flex-grow: 1;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="toolbar">
+      <button onclick="addTile()">+ Tile</button>
+      <button onclick="removeTile()">- Tile</button>
+      <button id="reset-layout-btn" onclick="resetLayout()">
+        Reset Layout
+      </button>
+      <input
+        type="text"
+        id="layout-input"
+        placeholder="Grid (contoh: 2x2)"
+        oninput="changeLayout(this.value)"
+      />
+    </div>
+
+    <div id="tile-container">
+      <div class="tile">
+        <div class="tile-toolbar">
+          <input type="text" class="url-input" value="https://example.com" />
+          <button onclick="navigate(this)">Go</button>
+        </div>
+        <webview
+          src="https://example.com"
+          partition="persist:default"
+        ></webview>
+      </div>
+    </div>
+
+    <script src="renderer.js"></script>
+  </body>
+</html>
