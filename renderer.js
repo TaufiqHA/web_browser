@@ -23,7 +23,7 @@ function addTile() {
     <button onclick="navigate(this)">Go</button>
     <button class="delete-btn" onclick="deleteTile(this)">Hapus</button>
   </div>
-  <webview src="${url}" partition="${partitionName}"></webview>
+  <webview src="${url}" partition="${partitionName}" useragent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"></webview>
 `;
 
   container.appendChild(newTile);
