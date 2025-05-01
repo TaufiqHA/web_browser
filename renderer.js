@@ -21,6 +21,8 @@ function addTile() {
     <button onclick="goForward(this)">➡️</button>
     <input type="text" class="url-input" value="${url}">
     <button onclick="navigate(this)">Go</button>
+    <button onclick="zoomIn(this)">🔍➕</button>
+    <button onclick="zoomOut(this)">🔍➖</button>
     <button class="delete-btn" onclick="deleteTile(this)">Hapus</button>
   </div>
   <webview src="${url}" partition="${partitionName}" useragent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"></webview>
@@ -44,6 +46,8 @@ function loadTiles() {
     <button onclick="goForward(this)">➡️</button>
     <input type="text" class="url-input" value="${tile.url}">
     <button onclick="navigate(this)">Go</button>
+    <button onclick="zoomIn(this)">🔍➕</button>
+    <button onclick="zoomOut(this)">🔍➖</button>
     <button class="delete-btn" onclick="deleteTile(this)">Hapus</button>
   </div>
   <webview src="${tile.url}" partition="${tile.partition}" useragent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"></webview>
@@ -158,6 +162,24 @@ function goForward(button) {
   }
 }
 
+async function zoomIn(button) {
+  const webview = button.closest(".tile").querySelector("webview");
+  if (webview) {
+    const factor = await webview.getZoomFactor();
+    webview.setZoomFactor(factor + 0.1);
+  }
+}
+
+async function zoomOut(button) {
+  const webview = button.closest(".tile").querySelector("webview");
+  if (webview) {
+    const factor = await webview.getZoomFactor();
+    webview.setZoomFactor(Math.max(0.25, factor - 0.1)); // batas minimal zoom
+  }
+}
+
+window.zoomIn = zoomIn;
+window.zoomOut = zoomOut;
 window.goBack = goBack;
 window.goForward = goForward;
 window.changeLayout = changeLayout;
