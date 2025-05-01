@@ -46,7 +46,7 @@ function loadTiles() {
     <button onclick="navigate(this)">Go</button>
     <button class="delete-btn" onclick="deleteTile(this)">Hapus</button>
   </div>
-  <webview src="${tile.url}" partition="${tile.partition}"></webview>
+  <webview src="${tile.url}" partition="${tile.partition}" useragent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"></webview>
 `;
 
     container.appendChild(newTile);
