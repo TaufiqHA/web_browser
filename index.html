@@ -52,7 +52,6 @@
   <body>
     <div id="toolbar">
       <button onclick="addTile()">+ Tile</button>
-      <button onclick="removeTile()">- Tile</button>
       <button id="reset-layout-btn" onclick="resetLayout()">
         Reset Layout
       </button>
@@ -64,18 +63,7 @@
       />
     </div>
 
-    <div id="tile-container">
-      <div class="tile">
-        <div class="tile-toolbar">
-          <input type="text" class="url-input" value="https://example.com" />
-          <button onclick="navigate(this)">Go</button>
-        </div>
-        <webview
-          src="https://example.com"
-          partition="persist:default"
-        ></webview>
-      </div>
-    </div>
+    <div id="tile-container"></div>
 
     <script src="renderer.js"></script>
   </body>

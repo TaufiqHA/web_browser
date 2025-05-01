@@ -1,15 +1,29 @@
 {
   "name": "web-browser",
   "version": "1.0.0",
+  "description": "Aplikasi browser tile dengan container system",
+  "author": "Taufiq",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-builder"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
-  "dependencies": {
-    "electron": "^36.0.1"
+  "build": {
+    "appId": "com.tiletabsbrowser.webbrowser",
+    "productName": "Tile Tabs Browser",
+    "files": [
+      "**/*"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    },
+    "win": {
+      "target": "nsis"
+    }
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "electron": "^36.0.1",
+    "electron-builder": "^26.0.12"
   }
 }

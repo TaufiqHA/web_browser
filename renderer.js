@@ -7,7 +7,7 @@ function addTile() {
   const partitionName = "persist:tile" + (container.children.length + 1);
 
   // Ambil URL input
-  const url = "https://example.com"; // Misal menggunakan input yang ada, atau default URL
+  const url = "https://google.com"; // Misal menggunakan input yang ada, atau default URL
 
   // Simpan data tile ke localStorage
   let tiles = JSON.parse(localStorage.getItem("tiles")) || [];
@@ -16,13 +16,15 @@ function addTile() {
   localStorage.setItem("tiles", JSON.stringify(tiles));
 
   newTile.innerHTML = `
-      <div class="tile-toolbar">
-        <input type="text" class="url-input" value="${url}">
-        <button onclick="navigate(this)">Go</button>
-        <button class="delete-btn" onclick="deleteTile(this)">Hapus</button>
-      </div>
-      <webview src="${url}" partition="${partitionName}"></webview>
-    `;
+  <div class="tile-toolbar">
+    <button onclick="goBack(this)">⬅️</button>
+    <button onclick="goForward(this)">➡️</button>
+    <input type="text" class="url-input" value="${url}">
+    <button onclick="navigate(this)">Go</button>
+    <button class="delete-btn" onclick="deleteTile(this)">Hapus</button>
+  </div>
+  <webview src="${url}" partition="${partitionName}"></webview>
+`;
 
   container.appendChild(newTile);
   adjustGrid();
@@ -37,13 +39,15 @@ function loadTiles() {
     newTile.className = "tile";
 
     newTile.innerHTML = `
-        <div class="tile-toolbar">
-          <input type="text" class="url-input" value="${tile.url}">
-          <button onclick="navigate(this)">Go</button>
-          <button class="delete-btn" onclick="deleteTile(this)">Hapus</button>
-        </div>
-        <webview src="${tile.url}" partition="${tile.partition}"></webview>
-      `;
+  <div class="tile-toolbar">
+    <button onclick="goBack(this)">⬅️</button>
+    <button onclick="goForward(this)">➡️</button>
+    <input type="text" class="url-input" value="${tile.url}">
+    <button onclick="navigate(this)">Go</button>
+    <button class="delete-btn" onclick="deleteTile(this)">Hapus</button>
+  </div>
+  <webview src="${tile.url}" partition="${tile.partition}"></webview>
+`;
 
     container.appendChild(newTile);
   });
@@ -98,6 +102,14 @@ function navigate(button) {
   const webview = tile.querySelector("webview");
   if (webview && input) {
     webview.loadURL(input.value);
+
+    // UPDATE localStorage supaya URL baru tersimpan
+    let tiles = JSON.parse(localStorage.getItem("tiles")) || [];
+    const index = Array.from(tile.parentNode.children).indexOf(tile);
+    if (tiles[index]) {
+      tiles[index].url = input.value;
+      localStorage.setItem("tiles", JSON.stringify(tiles));
+    }
   }
 }
 
@@ -124,16 +136,35 @@ function changeLayout(value) {
 function loadLayout() {
   const layout = localStorage.getItem("layout");
   if (layout) {
-    changeLayout(layout); // Memuat layout yang disimpan
+    changeLayout(layout); // Atur grid layout
+    const layoutInput = document.getElementById("layout-input");
+    if (layoutInput) layoutInput.value = layout; // Isi input text juga
   }
 }
 
+function goBack(button) {
+  const tile = button.closest(".tile");
+  const webview = tile.querySelector("webview");
+  if (webview && webview.canGoBack()) {
+    webview.goBack();
+  }
+}
+
+function goForward(button) {
+  const tile = button.closest(".tile");
+  const webview = tile.querySelector("webview");
+  if (webview && webview.canGoForward()) {
+    webview.goForward();
+  }
+}
+
+window.goBack = goBack;
+window.goForward = goForward;
 window.changeLayout = changeLayout;
+window.navigate = navigate;
 
 window.onload = function () {
   adjustGrid();
   loadLayout();
   loadTiles(); // Muat tiles yang disimpan
 };
-
-window.navigate = navigate;
